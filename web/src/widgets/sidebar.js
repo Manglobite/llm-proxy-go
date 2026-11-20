@@ -11,6 +11,7 @@ export function createSidebar(root) {
       <button type="button" data-screen="quotas">③ Квоты</button>
       <button type="button" data-screen="usage">④ Токены</button>
       <button type="button" data-screen="errors">⑤ Ошибки <span class="count" data-el="err-count">0</span></button>
+      <button type="button" data-screen="connection">⑥ Подключение</button>
     </nav>
     <div class="sidebar-footer">
       <div data-el="version"></div>

@@ -142,6 +142,8 @@ var (
 	ErrConfigInvalid  = errors.New("проверьте имя, тип, URL, аккаунт, SOCKS-путь и обязательные поля")
 	ErrConfigDisabled = errors.New("для записи задайте server.webui_token в config.json и перезагрузите прокси")
 	ErrConfigAuth     = errors.New("unauthorized")
+	ErrClientNotFound = errors.New("клиентский ключ не найден")
+	ErrClientShared   = errors.New("один ключ используется несколькими клиентами; удалите все его записи вручную и перезагрузите конфиг")
 )
 
 func (m *Manager) AddProvider(token, name string, raw json.RawMessage) error {
@@ -203,6 +205,10 @@ func (m *Manager) AddClient(token, name string) (string, error) {
 		return "", err
 	}
 	return key, nil
+}
+
+func (m *Manager) RevokeClient(token, name string) error {
+	return m.writeEntry(token, "clients", name, nil, true)
 }
 
 func (m *Manager) AddSocks(token, name string, raw json.RawMessage) error {
@@ -322,10 +328,24 @@ func (m *Manager) writeEntry(token, section, name string, raw json.RawMessage, u
 	if err != nil {
 		return err
 	}
-	if _, exists := entries[name]; update != exists {
-		return ErrConfigConflict
+	if section == "clients" && raw == nil {
+		clients := m.Snapshot().Cfg.Server.Clients
+		key, exists := clients[name]
+		if !exists {
+			return ErrClientNotFound
+		}
+		for other, value := range clients {
+			if other != name && key != "" && key == value {
+				return ErrClientShared
+			}
+		}
+		delete(entries, name)
+	} else {
+		if _, exists := entries[name]; update != exists {
+			return ErrConfigConflict
+		}
+		entries[name] = raw
 	}
-	entries[name] = raw
 	parent[key], err = json.Marshal(entries)
 	if err != nil {
 		return ErrConfigInvalid

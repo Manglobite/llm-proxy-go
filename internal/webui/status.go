@@ -78,6 +78,7 @@ type statusClient struct {
 	Name      string `json:"name"`
 	Req24h    int64  `json:"req24h"`
 	Tokens24h string `json:"tokens24h"`
+	Revoked   bool   `json:"revoked,omitempty"`
 }
 
 // handleStatus — сборка ответа по ЖИВОМУ снапшоту: релоад меняет состав
@@ -410,13 +411,15 @@ func (h *Handler) statusClients(snap *config.Snapshot, now time.Time) []statusCl
 		}
 	}
 	for _, name := range sortedKeys(snap.Cfg.Server.Clients) {
-		c := statusClient{Name: name}
-		if s, ok := stats[name]; ok {
-			c.Req24h, c.Tokens24h = s[0], humanTokens(s[1])
-		} else {
-			c.Tokens24h = "0"
+		s := stats[name]
+		out = append(out, statusClient{Name: name, Req24h: s[0], Tokens24h: humanTokens(s[1])})
+	}
+	for _, name := range sortedKeys(stats) {
+		if _, active := snap.Cfg.Server.Clients[name]; active || name == "" {
+			continue
 		}
-		out = append(out, c)
+		s := stats[name]
+		out = append(out, statusClient{Name: name, Req24h: s[0], Tokens24h: humanTokens(s[1]), Revoked: true})
 	}
 	return out
 }

@@ -263,6 +263,9 @@ func main() {
 			})
 			return key, err
 		},
+		RevokeClient: func(token, name string) error {
+			return applyConfig(func() error { return mgr.RevokeClient(token, name) })
+		},
 		AddSocks:    wrapAdd(mgr.AddSocks),
 		UpdateSocks: wrapAdd(mgr.UpdateSocks),
 		CodexDeps:   codexDeps,

@@ -10,7 +10,9 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
+	"llm-proxy/internal/accounting"
 	"llm-proxy/internal/config"
 	"llm-proxy/internal/server"
 	"llm-proxy/internal/upstream/openailike"
@@ -72,9 +74,10 @@ func TestModelCatalog(t *testing.T) {
 	}
 }
 
-func TestCreateClientKey(t *testing.T) {
+func TestCreateAndRevokeClientKey(t *testing.T) {
 	const admin = "fixture-admin"
 	const endpoint = "/api/config/clients"
+	const revoke = endpoint + "/revoke"
 	const payload = `{"name":"new-client"}`
 	path := filepath.Join(t.TempDir(), "config.json")
 	write := func(body string) {
@@ -91,7 +94,7 @@ func TestCreateClientKey(t *testing.T) {
 		t.Fatal(err)
 	}
 	d := newEnv(t, "").ui.deps
-	d.Snapshot, d.AddClient = mgr.Snapshot, mgr.AddClient
+	d.Snapshot, d.AddClient, d.RevokeClient = mgr.Snapshot, mgr.AddClient, mgr.RevokeClient
 	ui, err := New(d)
 	if err != nil {
 		t.Fatal(err)
@@ -114,6 +117,7 @@ func TestCreateClientKey(t *testing.T) {
 		return w
 	}
 	request(http.MethodPost, endpoint, "", payload, 403)
+	request(http.MethodPost, revoke, "", payload, 403)
 	write(`{"Server":{"listen":"127.0.0.1:8787","webui_token":"` + admin + `","Clients":{"existing":"fixture-client"}}}`)
 	if err := mgr.Reload(path); err != nil {
 		t.Fatal(err)
@@ -151,7 +155,38 @@ func TestCreateClientKey(t *testing.T) {
 	if cfg.Server.Clients["new-client"] != result.Key || cfg.Server.Clients["existing"] != "fixture-client" || cfg.Server.WebUIToken != admin {
 		t.Fatal("key not persisted or unrelated settings lost")
 	}
+	for _, row := range []accounting.RequestRow{
+		{Ts: testNow.Add(-time.Hour), ClientKey: "new-client", Alias: "test", Prompt: 20, Completion: 10},
+		{Ts: testNow.Add(-48 * time.Hour), ClientKey: "new-client", Alias: "test", Prompt: 40, Completion: 10},
+	} {
+		if err := d.Accounting.InsertRequest(row, nil); err != nil {
+			t.Fatal(err)
+		}
+	}
+	request(http.MethodPost, revoke, result.Key, payload, 401)
+	request(http.MethodPost, revoke, admin, payload, 200)
+	request(http.MethodPost, revoke, admin, payload, 404)
+	request(http.MethodGet, "/v1/models", result.Key, "", 401)
+	request(http.MethodGet, "/v1/models", "fixture-client", "", 200)
+	if err := mgr.Reload(path); err != nil {
+		t.Fatal(err)
+	}
+	request(http.MethodGet, "/v1/models", result.Key, "", 401)
+	if _, exists := mgr.Snapshot().Cfg.Server.Clients["new-client"]; exists {
+		t.Fatal("revoked key is still in the saved configuration")
+	}
+	var status statusResponse
+	w = request(http.MethodGet, "/api/status", admin, "", 200)
+	if err := json.Unmarshal(w.Body.Bytes(), &status); err != nil || len(status.ClientKeys) != 2 || status.ClientKeys[1] != (statusClient{Name: "new-client", Req24h: 1, Tokens24h: "30", Revoked: true}) {
+		t.Fatal("status did not retain the revoked client's recent statistics")
+	}
+	var usage usageResponse
+	w = request(http.MethodGet, "/api/usage?client_key=new-client", admin, "", 200)
+	if err := json.Unmarshal(w.Body.Bytes(), &usage); err != nil || len(usage.ByAlias) != 1 || usage.ByAlias[0].Req != 2 || !strings.Contains(strings.Join(usage.Filters.Client, ","), "new-client") {
+		t.Fatal("revoked client is no longer available in usage history")
+	}
 	write(`{"server":{"listen":"127.0.0.1:8787","webui_token":"` + admin + `"}}`)
+	request(http.MethodPost, revoke, admin, `{"name":"existing"}`, 409)
 	request(http.MethodPost, endpoint, admin, `{"name":"other-client"}`, 409)
 	if err := mgr.Reload(path); err != nil {
 		t.Fatal(err)

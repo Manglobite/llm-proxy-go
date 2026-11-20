@@ -63,29 +63,49 @@ export function mountDashboard(section) {
     <td class="num">${esc(r.usd)}</td><td class="num">${esc(r.cr)}</td></tr>`).join("");
   }
 
-  async function load() {
-    const usage = parseUsage(await api("/api/usage"));
-    summary.innerHTML = usage.summary.map(s => `
-      <div class="stat"><div class="v">${esc(s.value)}${s.unit ? "<small>" + esc(s.unit) + "</small>" : ""}</div><div class="l">${esc(s.label)}</div></div>`).join("");
-    days = usage.days;
-    rows = usage.byAlias;
+  let client = "все";
+  let alias = "все";
+  let period = "14 дней";
+  let revision = 0;
+  let currentUsage;
+
+  function applyFilters() {
+    if (!currentUsage) return;
+    rows = alias === "все" ? currentUsage.byAlias : currentUsage.byAlias.filter(r => r.alias === alias);
+    const n = parseInt(period, 10) || 0;
+    days = n ? currentUsage.days.slice(-n) : currentUsage.days;
     renderChart();
     renderUsageByAlias();
-    if (!filters.childElementCount) { // панель строится один раз — обработчики не дублируются
-      createUsageFilter(filters, usage.filters, {
-        onAlias: value => {
-          rows = value === "все" ? usage.byAlias : usage.byAlias.filter(r => r.alias === value);
-          renderUsageByAlias();
-        },
-        onPeriod: value => {
-          const n = parseInt(value, 10) || 0;
-          days = n ? usage.days.slice(-n) : usage.days;
-          renderChart();
-        },
-        onExport: () => showNotice("Экспорт CSV в v1 не входит (SPEC 15)."),
-      });
-    }
   }
-  load().catch(err => showNotice("Не удалось загрузить usage: " + err.message, { title: "API" }));
-  return {};
+
+  async function load() {
+    const version = ++revision;
+    const query = new URLSearchParams();
+    if (client !== "все") query.set("client_key", client);
+    const usage = parseUsage(await api("/api/usage" + (query.size ? "?" + query : "")));
+    if (version !== revision) return;
+    if (!usage.filters.client.includes(client) && client !== "все") {
+      client = "все";
+      return load();
+    }
+    currentUsage = usage;
+    summary.innerHTML = usage.summary.map(s => `
+      <div class="stat"><div class="v">${esc(s.value)}${s.unit ? "<small>" + esc(s.unit) + "</small>" : ""}</div><div class="l">${esc(s.label)}</div></div>`).join("");
+    if (!usage.filters.alias.includes(alias)) alias = "все";
+    applyFilters();
+    filters.replaceChildren();
+    createUsageFilter(filters, usage.filters, {
+      onClient: value => { client = value; refresh(); },
+      onAlias: value => { alias = value; applyFilters(); },
+      onPeriod: value => { period = value; applyFilters(); },
+      onExport: () => showNotice("Экспорт CSV в v1 не входит (SPEC 15)."),
+    });
+    const selects = filters.querySelectorAll("select");
+    selects[0].value = client;
+    selects[1].value = alias;
+    selects[2].value = period;
+  }
+
+  const refresh = () => load().catch(err => showNotice("Не удалось загрузить usage: " + err.message, { title: "API" }));
+  return { refresh };
 }

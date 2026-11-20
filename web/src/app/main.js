@@ -6,6 +6,7 @@ import { mountAliases } from "../pages/aliases.js";
 import { mountQuotas } from "../pages/quotas.js";
 import { mountDashboard } from "../pages/dashboard.js";
 import { mountErrors } from "../pages/errors.js";
+import { mountConnection } from "../pages/connection.js";
 import { createSidebar } from "../widgets/sidebar.js";
 import { setUnauthorizedHandler } from "../shared/api/client.js";
 import { createDialog } from "../shared/ui/dialog.js";
@@ -19,6 +20,7 @@ const TITLES = {
   quotas: "Квоты",
   usage: "Учёт токенов",
   errors: "Ошибки",
+  connection: "Подключение",
 };
 const POLL_MS = 30000; // период обновления статусов (CODING 2.6)
 
@@ -103,8 +105,9 @@ const providers = mountProviders(screens.accounts, {
 });
 mountAliases(screens.aliases);
 const quotas = mountQuotas(screens.quotas);
-mountDashboard(screens.usage);
+const dashboard = mountDashboard(screens.usage);
 mountErrors(screens.errors, { onCount: n => sidebar.setErrorsCount(n) });
+const connection = mountConnection(screens.connection);
 
 let pollTimer = null;
 function restartPolling(name) {
@@ -122,6 +125,8 @@ function show(name) {
   for (const [n, sec] of Object.entries(screens)) sec.classList.toggle("active", n === name);
   titleEl.textContent = TITLES[name];
   restartPolling(name);
+  if (name === "usage") dashboard.refresh();
+  if (name === "connection") connection.refresh();
 }
 
 sidebar.nav.addEventListener("click", e => {

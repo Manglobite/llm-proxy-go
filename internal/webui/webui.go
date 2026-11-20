@@ -32,12 +32,13 @@ import (
 type Deps struct {
 	// Snapshot — живой снапшот конфигурации (релоад подменяет атомарно;
 	// webui_token читается на каждый запрос — релоад подхватывает его).
-	Snapshot    func() *config.Snapshot
-	AddProvider func(token, name string, data json.RawMessage) error
-	AddAlias    func(token, name string, data json.RawMessage) error
-	AddClient   func(token, name string) (string, error)
-	AddSocks    func(token, name string, data json.RawMessage) error
-	UpdateSocks func(token, name string, data json.RawMessage) error
+	Snapshot     func() *config.Snapshot
+	AddProvider  func(token, name string, data json.RawMessage) error
+	AddAlias     func(token, name string, data json.RawMessage) error
+	AddClient    func(token, name string) (string, error)
+	RevokeClient func(token, name string) error
+	AddSocks     func(token, name string, data json.RawMessage) error
+	UpdateSocks  func(token, name string, data json.RawMessage) error
 
 	// CodexDeps — резолв клиента/origin OAuth-аккаунта (closure из main,
 	// общий с Refresher): форс-refresh делает codex.Refresh через него.
@@ -135,6 +136,7 @@ func New(d Deps) (*Handler, error) {
 	h.mux.HandleFunc("/api/config/aliases", h.guard(http.MethodPost, h.configCreate("alias", d.AddAlias)))
 	h.mux.HandleFunc("/api/config/models", h.guard(http.MethodGet, h.handleModelCatalog))
 	h.mux.HandleFunc("/api/config/clients", h.guard(http.MethodPost, h.configAction("", d.AddClient != nil, h.createClient)))
+	h.mux.HandleFunc("/api/config/clients/revoke", h.guard(http.MethodPost, h.configAction("", d.RevokeClient != nil, h.revokeClient)))
 	addSocks := h.guard(http.MethodPost, h.configCreate("socks", d.AddSocks))
 	updateSocks := h.guard(http.MethodPut, h.configCreate("socks", d.UpdateSocks))
 	h.mux.HandleFunc("/api/config/socks", func(w http.ResponseWriter, r *http.Request) {
@@ -176,7 +178,7 @@ func (h *Handler) Patterns() []string {
 		"/api/errors", "/api/errors/{id}", "/api/errors/cleanup",
 		"/api/oauth/start", "/api/oauth/pending", "/api/oauth/paste", "/api/oauth/refresh",
 		"/api/oauth/zcode/start", "/api/oauth/zcode/pending",
-		"/api/config/providers", "/api/config/aliases", "/api/config/models", "/api/config/clients", "/api/config/socks", "/api/config/socks/check", "/api/config/socks/recheck",
+		"/api/config/providers", "/api/config/aliases", "/api/config/models", "/api/config/clients", "/api/config/clients/revoke", "/api/config/socks", "/api/config/socks/check", "/api/config/socks/recheck",
 	)
 	fixed := len(out)
 	for p := range h.files {

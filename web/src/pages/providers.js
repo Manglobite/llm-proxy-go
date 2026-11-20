@@ -10,7 +10,7 @@ import { parseStatus } from "../entities/account.js";
 import { ipPinRowHtml } from "../widgets/ip-pin-row.js";
 import { createAccountCard } from "../widgets/account-card.js";
 import { createOAuthFlow } from "../features/oauth-flow.js";
-import { createClientForm, createProviderForm, createSocksForm } from "../features/config-form.js";
+import { createClientForm, createProviderForm, createSocksForm, revokeClientForm } from "../features/config-form.js";
 import { createButton } from "../shared/ui/btn.js";
 
 // один экземпляр модалки: активный флоу — один на аккаунт (SPEC 12)
@@ -50,6 +50,7 @@ export function mountProviders(section, { onStatus } = {}) {
     { label: "имя" },
     { label: "запросов 24ч", num: true },
     { label: "токенов 24ч", num: true },
+    { label: "действия" },
   ]);
   keysCard.appendChild(keysTable.el);
   top.append(socksCard, keysCard);
@@ -109,7 +110,17 @@ export function mountProviders(section, { onStatus } = {}) {
       card.append(result);
     });
     keysTable.tbody.innerHTML = status.clientKeys.map(k => `
-      <tr><td class="mono">${esc(k.name)}</td><td class="num">${esc(fmtInt(k.req24h))}</td><td class="num">${esc(k.tokens24h)}</td></tr>`).join("");
+      <tr><td class="mono">${esc(k.name)}</td><td class="num">${esc(fmtInt(k.req24h))}</td><td class="num">${esc(k.tokens24h)}</td><td></td></tr>`).join("");
+    status.clientKeys.forEach((key, i) => {
+      const cell = keysTable.tbody.rows[i].cells[3];
+      if (key.revoked) {
+        cell.textContent = "Отозван";
+        return;
+      }
+      cell.append(createButton({ text: "Отозвать", small: true,
+        onClick: () => revokeClientForm(key.name, { onSuccess: () => refreshAfterSave("Клиентский ключ") }),
+      }));
+    });
     accountsCard.querySelectorAll(".account").forEach(n => n.remove());
     for (const account of status.accounts) {
       accountsCard.appendChild(createAccountCard(account, status.socks, {

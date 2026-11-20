@@ -130,6 +130,23 @@ func (d *DB) UsageByGroup(from, to time.Time, by string, f UsageFilter) ([]Usage
 	return out, rows.Err()
 }
 
+func (d *DB) UsageClientNames() ([]string, error) {
+	rows, err := d.db.Query(`SELECT DISTINCT client_key FROM requests WHERE client_key <> ''`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var names []string
+	for rows.Next() {
+		var name string
+		if err := rows.Scan(&name); err != nil {
+			return nil, err
+		}
+		names = append(names, name)
+	}
+	return names, rows.Err()
+}
+
 // UsageClientRow — сводка по клиентскому ключу (экран ①: «запросов 24ч»,
 // «токенов 24ч» = prompt+completion).
 type UsageClientRow struct {

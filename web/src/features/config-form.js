@@ -10,7 +10,7 @@ function errorMessage(err) {
   catch { return msg; }
 }
 
-function openForm(title, endpoint, build, onSuccess, method = "POST") {
+function openForm(title, endpoint, build, onSuccess, method = "POST", submitText = "Сохранить") {
   const dlg = createDialog({ label: title, onClose: () => dlg.el.remove() });
   const form = document.createElement("form");
   form.className = "modal";
@@ -36,7 +36,7 @@ function openForm(title, endpoint, build, onSuccess, method = "POST") {
   error.hidden = true;
   const row = document.createElement("div");
   row.className = "flex-gap8";
-  const save = createButton({ text: "Сохранить", variant: "primary", disabled: !payload });
+  const save = createButton({ text: submitText, variant: "primary", disabled: !payload });
   save.type = "submit";
   row.append(save, createButton({ text: "Отмена", onClick: dlg.close }));
   form.append(error, row);
@@ -70,6 +70,15 @@ function text(placeholder, required = false, type = "text") {
   el.type = type;
   el.required = required;
   return el;
+}
+
+export function revokeClientForm(name, { onSuccess } = {}) {
+  return openForm("Отозвать клиентский ключ", "/api/config/clients/revoke", (_, form) => {
+    const hint = document.createElement("p");
+    hint.textContent = "Ключ клиента «" + name + "» сразу перестанет работать. Статистика сохранится.";
+    form.append(hint);
+    return () => ({ name });
+  }, onSuccess, "POST", "Отозвать ключ");
 }
 
 export function createClientForm({ onSuccess } = {}) {

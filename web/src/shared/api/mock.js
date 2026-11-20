@@ -160,10 +160,18 @@ export async function mockApi(path, opts = {}) {
   if (route === "/api/status" && method === "GET")
     return { socks: DEMO_SOCKS_PATHS, accounts: DEMO_ACCOUNTS, client_keys: DEMO_CLIENT_KEYS, meta: DEMO_STATUS_META };
   if (route === "/api/config/clients" && method === "POST") {
-    if (DEMO_CLIENT_KEYS.some(client => client.name === body.name))
-      throw new Error("409: имя уже занято");
-    DEMO_CLIENT_KEYS.push({ name: body.name, req24h: 0, tokens24h: "0" });
+    const prior = DEMO_CLIENT_KEYS.find(client => client.name === body.name);
+    if (prior && !prior.revoked) throw new Error("409: имя уже занято");
+    if (prior) prior.revoked = false;
+    else DEMO_CLIENT_KEYS.push({ name: body.name, req24h: 0, tokens24h: "0" });
     return { key: "demo-only-not-a-real-key" };
+  }
+  if (route === "/api/config/clients/revoke" && method === "POST") {
+    const client = DEMO_CLIENT_KEYS.find(client => client.name === body.name && !client.revoked);
+    if (!client) throw new Error("404: клиентский ключ не найден");
+    if (client.req24h) client.revoked = true;
+    else DEMO_CLIENT_KEYS.splice(DEMO_CLIENT_KEYS.indexOf(client), 1);
+    return { ok: true };
   }
   if (route === "/api/oauth/start" && method === "POST")
     return { account: body.account ?? DEMO_OAUTH.account, url: DEMO_OAUTH.url, ttl: DEMO_OAUTH.ttl, callback: DEMO_OAUTH.callback };

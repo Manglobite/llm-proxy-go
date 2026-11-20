@@ -84,6 +84,7 @@ func TestWebUIStatic(t *testing.T) {
 		"/src/shared/ui/tokens.css": "text/css",
 		"/src/app/main.js":          "text/javascript",
 		"/src/shared/api/mock.js":   "text/javascript",
+		"/src/pages/connection.js": "text/javascript",
 	} {
 		rec := e.get(path, "")
 		if rec.Code != http.StatusOK || !strings.HasPrefix(rec.Header().Get("Content-Type"), want) {

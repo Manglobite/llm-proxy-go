@@ -154,6 +154,10 @@ func (h *Handler) configAction(field string, enabled bool, action func(http.Resp
 			writeJSONError(w, http.StatusUnauthorized, config.ErrConfigAuth.Error())
 		case errors.Is(err, config.ErrConfigDisabled):
 			writeJSONError(w, http.StatusForbidden, config.ErrConfigDisabled.Error())
+		case errors.Is(err, config.ErrClientNotFound):
+			writeJSONError(w, http.StatusNotFound, config.ErrClientNotFound.Error())
+		case errors.Is(err, config.ErrClientShared):
+			writeJSONError(w, http.StatusConflict, config.ErrClientShared.Error())
 		case errors.Is(err, config.ErrConfigConflict):
 			writeJSONError(w, http.StatusConflict, config.ErrConfigConflict.Error())
 		case errors.Is(err, config.ErrConfigInvalid):
@@ -170,6 +174,14 @@ func (h *Handler) createClient(w http.ResponseWriter, _ *http.Request, token, na
 		return err
 	}
 	writeJSON(w, map[string]string{"key": key})
+	return nil
+}
+
+func (h *Handler) revokeClient(w http.ResponseWriter, _ *http.Request, token, name string, _ json.RawMessage) error {
+	if err := h.deps.RevokeClient(token, name); err != nil {
+		return err
+	}
+	writeJSON(w, map[string]bool{"ok": true})
 	return nil
 }
 

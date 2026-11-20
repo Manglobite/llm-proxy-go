@@ -210,7 +210,7 @@ func groupRows(models map[string]config.ModelConfig, rows []accounting.UsageGrou
 	return out
 }
 
-// usageFilters — наборы селектов: клиентские ключи и алиасы из конфига,
+// usageFilters — наборы селектов: клиенты из истории и конфига, алиасы из конфига,
 // период — константы эталона (перерезает график на клиенте).
 func (h *Handler) usageFilters(snap *config.Snapshot) usageFilters {
 	f := usageFilters{
@@ -218,9 +218,18 @@ func (h *Handler) usageFilters(snap *config.Snapshot) usageFilters {
 		Alias:  []string{"все"},
 		Period: []string{"14 дней", "7 дней", "30 дней"},
 	}
-	for _, name := range sortedKeys(snap.Cfg.Server.Clients) {
-		f.Client = append(f.Client, name)
+	clients := make(map[string]struct{}, len(snap.Cfg.Server.Clients))
+	for name := range snap.Cfg.Server.Clients {
+		clients[name] = struct{}{}
 	}
+	if h.deps.Accounting != nil {
+		if names, err := h.deps.Accounting.UsageClientNames(); err == nil {
+			for _, name := range names {
+				clients[name] = struct{}{}
+			}
+		}
+	}
+	f.Client = append(f.Client, sortedKeys(clients)...)
 	for _, name := range sortedKeys(snap.Cfg.Aliases) {
 		f.Alias = append(f.Alias, name)
 	}
