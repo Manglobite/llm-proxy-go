@@ -1,0 +1,4 @@
+# TR-5: апстрим отдал только output_item.done без дельт — контент одним куском.
+response.created|{"type":"response.created","response":{"id":"resp_4","usage":null}}
+response.output_item.done|{"type":"response.output_item.done","item":{"type":"message","id":"msg_1","content":[{"type":"output_text","text":"Короткий ответ целиком"}]}}
+response.completed|{"type":"response.completed","response":{"id":"resp_4","usage":{"input_tokens":10,"output_tokens":5},"output":[{"type":"message","id":"msg_1"}]}}

@@ -1,0 +1,7 @@
+# OpenAI chat SSE: data-only чанки (пустое имя события), usage-чанк ПОСЛЕ
+# finish_reason (ловушка SPEC 8.5 — он должен попасть в message_delta), [DONE].
+|{"id":"c1","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"role":"assistant","content":""}}]}
+|{"id":"c1","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"Привет"}}]}
+|{"id":"c1","object":"chat.completion.chunk","choices":[{"index":0,"delta":{},"finish_reason":"stop"}]}
+|{"id":"c1","object":"chat.completion.chunk","choices":[],"usage":{"prompt_tokens":120,"completion_tokens":30,"prompt_tokens_details":{"cached_tokens":80},"completion_tokens_details":{"reasoning_tokens":12}}}
+|[DONE]

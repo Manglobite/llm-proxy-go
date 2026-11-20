@@ -1,0 +1,15 @@
+{
+  "socks": [
+    { "name": "str", "url": "str", "state": "str", "egress_ip": "str", "expected_ip": "str",
+      "match": true, "checked_ago": "str", "check_interval": "str", "error": "str" }
+  ],
+  "accounts": [
+    { "provider": "str", "auth": "str", "id": "str", "email": "str", "token": "str",
+      "socks": null, "allow_direct": false, "can_oauth": true, "oauth_mode": "str",
+      "usage": { "segments": [ { "pct": 0, "level": "str" } ], "label": "str" } }
+  ],
+  "client_keys": [
+    { "name": "str", "req24h": 0, "tokens24h": "str" }
+  ],
+  "meta": { "version": "str", "listen": "str", "config": "str", "uptime": "str" }
+}

@@ -1,0 +1,4 @@
+# F5: событие error в форме few-shot — объект в поле "error" (в codex_error.sse
+# та же ошибка приходит плоскими полями code/message). Закрывает ветку декодера.
+response.created|{"type":"response.created","response":{"id":"resp_8","usage":null}}
+error|{"error":{"code":"rate_limit","message":"лимит"}}

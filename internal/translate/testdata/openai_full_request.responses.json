@@ -1,0 +1,55 @@
+{
+  "model": "gpt-6.1-terra",
+  "instructions": "Системный промпт.",
+  "input": [
+    {
+      "type": "message",
+      "role": "user",
+      "content": "Погода в Москве?"
+    },
+    {
+      "type": "function_call",
+      "call_id": "call_1",
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Москва\"}"
+    },
+    {
+      "type": "function_call_output",
+      "call_id": "call_1",
+      "output": "+15°C"
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "content": "Спасибо!"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "name": "get_weather",
+      "description": "Погода",
+      "parameters": {
+        "properties": {
+          "city": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "strict": false
+    }
+  ],
+  "tool_choice": {
+    "name": "get_weather",
+    "type": "function"
+  },
+  "max_output_tokens": 512,
+  "temperature": 0.2,
+  "reasoning": {
+    "effort": "high"
+  },
+  "prompt_cache_key": "conv-42",
+  "store": false,
+  "stream": true
+}

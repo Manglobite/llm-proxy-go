@@ -1,0 +1,41 @@
+{
+  "model": "work/terra",
+  "max_tokens": 512,
+  "temperature": 0.2,
+  "stream": true,
+  "reasoning_effort": "high",
+  "prompt_cache_key": "conv-42",
+  "stop": ["STOP"],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Погода",
+        "parameters": {
+          "type": "object",
+          "properties": { "city": { "type": "string" } }
+        }
+      }
+    }
+  ],
+  "tool_choice": { "type": "function", "function": { "name": "get_weather" } },
+  "messages": [
+    { "role": "system", "content": "Системный промпт." },
+    {
+      "role": "user",
+      "content": [
+        { "type": "text", "text": "Погода в Москве?", "cache_control": { "type": "ephemeral" } }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        { "id": "call_1", "type": "function", "function": { "name": "get_weather", "arguments": "{\"city\":\"Москва\"}" } }
+      ]
+    },
+    { "role": "tool", "tool_call_id": "call_1", "content": "+15°C" },
+    { "role": "user", "content": "Спасибо!" }
+  ]
+}

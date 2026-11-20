@@ -1,0 +1,28 @@
+{
+  "model": "work/terra",
+  "instructions": "Системный промпт.",
+  "input": [
+    { "type": "message", "role": "user", "content": [ { "type": "input_text", "text": "Погода в Москве?" } ] },
+    { "type": "reasoning", "id": "rs_1", "summary": [ { "type": "summary_text", "text": "Проверяю прогноз" } ] },
+    { "type": "message", "role": "assistant", "content": "Смотрю прогноз." },
+    { "type": "function_call", "call_id": "call_1", "name": "get_weather", "arguments": "{\"city\":\"Москва\"}" },
+    { "type": "function_call_output", "call_id": "call_1", "output": "+15°C" },
+    { "type": "message", "role": "user", "content": "Спасибо!" }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "name": "get_weather",
+      "description": "Погода",
+      "parameters": { "type": "object", "properties": { "city": { "type": "string" } } }
+    }
+  ],
+  "tool_choice": "auto",
+  "max_output_tokens": 512,
+  "temperature": 0.2,
+  "stream": true,
+  "reasoning": { "effort": "high" },
+  "prompt_cache_key": "conv-42",
+  "previous_response_id": "",
+  "store": false
+}

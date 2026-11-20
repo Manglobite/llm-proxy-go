@@ -1,0 +1,25 @@
+{
+  "id": "msg_proxy",
+  "type": "message",
+  "role": "assistant",
+  "content": [
+    {
+      "type": "text",
+      "text": "Сейчас +15°C."
+    },
+    {
+      "type": "tool_use",
+      "id": "call_1",
+      "name": "get_weather",
+      "input": {
+        "city": "Москва"
+      }
+    }
+  ],
+  "stop_reason": "tool_use",
+  "usage": {
+    "input_tokens": 120,
+    "output_tokens": 30,
+    "cache_read_input_tokens": 80
+  }
+}

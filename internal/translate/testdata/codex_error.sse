@@ -1,0 +1,6 @@
+# SPEC 8.4: верхнеуровневое событие error.
+response.created|{"type":"response.created","response":{"id":"resp_7","usage":null}}
+error|{"type":"error","code":"overloaded_error","message":"перегрузка"}
+# F5: повторная ошибка в форме few-shot (объект "error") ПОСЛЕ финала —
+# движок обязан игнорировать события после done (done-guard), goldens не меняются.
+error|{"error":{"code":"rate_limit","message":"лимит"}}

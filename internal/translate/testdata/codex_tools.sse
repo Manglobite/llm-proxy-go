@@ -1,0 +1,8 @@
+# Codex Responses SSE: вызов функции; аргументы приходят кусками дельт.
+# output_item.added — событие, которое декодер не знает: должно молча пропускаться.
+response.created|{"type":"response.created","response":{"id":"resp_2","usage":null}}
+response.output_item.added|{"type":"response.output_item.added","item":{"type":"function_call","id":"fc_1","call_id":"call_9","name":"get_weather","arguments":""}}
+response.function_call_arguments.delta|{"type":"response.function_call_arguments.delta","item_id":"fc_1","delta":"{\"city\":"}
+response.function_call_arguments.delta|{"type":"response.function_call_arguments.delta","item_id":"fc_1","delta":"\"Москва\"}"}
+response.output_item.done|{"type":"response.output_item.done","item":{"type":"function_call","id":"fc_1","call_id":"call_9","name":"get_weather","arguments":"{\"city\":\"Москва\"}"}}
+response.completed|{"type":"response.completed","response":{"id":"resp_2","usage":{"input_tokens":64,"output_tokens":18},"output":[{"type":"function_call","id":"fc_1","call_id":"call_9","name":"get_weather","arguments":"{\"city\":\"Москва\"}"}]}}

@@ -1,0 +1,40 @@
+# Сборка, тесты и покрытие Go
+/bin/
+/proxy
+/llm-proxy
+/oauthflow
+*.test
+/coverage.out
+/coverage.html
+
+# Рабочие конфиги и временные файлы их атомарного сохранения
+/config.json
+/config.*.json
+!/config.example.json
+!/config.local.example.json
+.llm-proxy-config-*
+.env
+.env.*
+!.env.example
+
+# Токены и SQLite (включая журналы и sidecar-файлы)
+tokens.json
+zcode-tokens.json
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Локальные инструменты, служебные материалы и логи
+/.zcode/
+/.opencode/
+/.idea/
+/.vscode/
+/memory/
+AGENTS.md
+*.log
+.DS_Store

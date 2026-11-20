@@ -1,0 +1,12 @@
+event: response.created
+data: {"response":{"created_at":0,"id":"resp_test","model":"glm-5.3","object":"response","output":[],"status":"in_progress","usage":null},"type":"response.created"}
+
+event: response.output_item.added
+data: {"item":{"arguments":"","call_id":"call_1","id":"item_0","name":"get_weather","type":"function_call"},"output_index":0,"type":"response.output_item.added"}
+
+event: response.output_item.done
+data: {"item":{"arguments":"{\"city\":\"Москва\"}","call_id":"call_1","id":"item_0","name":"get_weather","type":"function_call"},"output_index":0,"type":"response.output_item.done"}
+
+event: response.completed
+data: {"response":{"created_at":0,"id":"resp_test","model":"glm-5.3","object":"response","output":[{"arguments":"{\"city\":\"Москва\"}","call_id":"call_1","id":"item_0","name":"get_weather","type":"function_call"}],"status":"completed","usage":{"input_tokens":10,"output_tokens":20}},"type":"response.completed"}
+

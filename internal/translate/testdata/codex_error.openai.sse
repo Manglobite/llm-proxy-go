@@ -1,0 +1,6 @@
+data: {"choices":[{"delta":{"content":"","role":"assistant"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"error":{"code":"overloaded_error","message":"перегрузка","type":"upstream_error"}}
+
+data: [DONE]
+

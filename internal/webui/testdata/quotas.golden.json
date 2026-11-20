@@ -1,0 +1,14 @@
+{
+  "cards": [
+    { "provider": "str", "account": "str", "title": "str",
+      "windows": [
+        { "label": "str", "value": "str", "pct": 0, "level": "str",
+          "reset": { "label": "str", "value": "str" } }
+      ],
+      "note": "str" }
+  ],
+  "rate_limits": {
+    "title": "str",
+    "rows": [ { "when": "str", "account": "str", "window": "str", "reset": "str" } ]
+  }
+}

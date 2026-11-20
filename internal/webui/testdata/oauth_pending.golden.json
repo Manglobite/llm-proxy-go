@@ -1,0 +1,5 @@
+{
+  "state": "str",
+  "url": "str",
+  "flows": [ { "account": "str", "state": "str", "url": "str", "expires_at": "str" } ]
+}

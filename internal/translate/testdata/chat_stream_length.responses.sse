@@ -1,0 +1,15 @@
+event: response.created
+data: {"response":{"created_at":0,"id":"resp_test","model":"glm-5.3","object":"response","output":[],"status":"in_progress","usage":null},"type":"response.created"}
+
+event: response.output_item.added
+data: {"item":{"content":[],"id":"item_0","role":"assistant","type":"message"},"output_index":0,"type":"response.output_item.added"}
+
+event: response.output_text.delta
+data: {"delta":"Обрезанн","item_id":"item_0","output_index":0,"type":"response.output_text.delta"}
+
+event: response.output_item.done
+data: {"item":{"content":[{"text":"Обрезанн","type":"output_text"}],"id":"item_0","role":"assistant","type":"message"},"output_index":0,"type":"response.output_item.done"}
+
+event: response.incomplete
+data: {"response":{"created_at":0,"id":"resp_test","incomplete_details":{"reason":"max_output_tokens"},"model":"glm-5.3","object":"response","output":[{"content":[{"text":"Обрезанн","type":"output_text"}],"id":"item_0","role":"assistant","type":"message"}],"status":"incomplete","usage":{"input_tokens":0,"output_tokens":0}},"type":"response.incomplete"}
+

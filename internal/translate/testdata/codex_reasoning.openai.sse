@@ -1,0 +1,12 @@
+data: {"choices":[{"delta":{"content":"","role":"assistant"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"reasoning_content":"Думаю о погоде и выбираю формат ответа"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"content":"В Москве +15°C"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{},"finish_reason":"stop","index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[],"id":"chatcmpl-proxy","object":"chat.completion.chunk","usage":{"completion_tokens":40,"prompt_tokens":90,"prompt_tokens_details":{"cached_tokens":0}}}
+
+data: [DONE]
+

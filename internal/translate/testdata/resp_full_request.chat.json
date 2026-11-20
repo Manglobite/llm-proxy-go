@@ -1,0 +1,56 @@
+{
+  "model": "glm-5.3",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Системный промпт."
+    },
+    {
+      "role": "user",
+      "content": "Погода в Москве?"
+    },
+    {
+      "role": "assistant",
+      "content": "Смотрю прогноз.",
+      "tool_calls": [
+        {
+          "id": "call_1",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\":\"Москва\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "+15°C",
+      "tool_call_id": "call_1"
+    },
+    {
+      "role": "user",
+      "content": "Спасибо!"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Погода",
+        "parameters": {
+          "properties": {
+            "city": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "max_tokens": 512,
+  "temperature": 0.2
+}

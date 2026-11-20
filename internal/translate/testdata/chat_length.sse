@@ -1,0 +1,4 @@
+# OpenAI chat SSE: finish_reason length без usage-чанка → max_tokens, нулевой usage.
+|{"id":"c4","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"role":"assistant","content":"Обрезанн"}}]}
+|{"id":"c4","object":"chat.completion.chunk","choices":[{"index":0,"delta":{},"finish_reason":"length"}]}
+|[DONE]

@@ -1,0 +1,12 @@
+data: {"choices":[{"delta":{"content":"","role":"assistant"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"content":"Привет"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"content":", мир!"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{},"finish_reason":"stop","index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[],"id":"chatcmpl-proxy","object":"chat.completion.chunk","usage":{"completion_tokens":30,"prompt_tokens":120,"prompt_tokens_details":{"cached_tokens":80}}}
+
+data: [DONE]
+

@@ -1,0 +1,12 @@
+{
+  "summary": [
+    { "value": "str", "label": "str" }
+  ],
+  "days": [ [ "str", 0, 0, 0 ] ],
+  "byAlias": [
+    { "alias": "str", "model": "str", "req": 0, "prompt": "str", "cached": "str",
+      "hit": 0, "compl": "str", "reason": "str", "usd": "str", "cr": "str" }
+  ],
+  "filters": { "client": [ "str", "str", "str" ], "alias": [ "str", "str", "str", "str" ],
+               "period": [ "str", "str", "str" ] }
+}

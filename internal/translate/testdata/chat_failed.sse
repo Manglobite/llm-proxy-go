@@ -1,0 +1,3 @@
+# F4: обрыв апстрима — [DONE] не приходит; финал даёт явный Fail.
+|{"id":"c5","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"role":"assistant","content":""}}]}
+|{"id":"c5","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"Частичный ответ"}}]}

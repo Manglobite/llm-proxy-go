@@ -1,0 +1,41 @@
+{
+  "model": "claude-terra",
+  "max_tokens": 1024,
+  "temperature": 0.7,
+  "stream": false,
+  "system": [
+    { "type": "text", "text": "Ты — аккуратный ассистент." },
+    { "type": "text", "text": "Отвечай по-русски.", "cache_control": { "type": "ephemeral" } }
+  ],
+  "thinking": { "type": "enabled", "budget_tokens": 2048 },
+  "stop_sequences": ["\n\nUser:"],
+  "tools": [
+    {
+      "name": "get_weather",
+      "description": "Погода в городе",
+      "input_schema": {
+        "type": "object",
+        "properties": { "city": { "type": "string" } },
+        "required": ["city"]
+      }
+    }
+  ],
+  "tool_choice": { "type": "any" },
+  "messages": [
+    { "role": "user", "content": [{ "type": "text", "text": "Привет, как дела в Москве?", "cache_control": { "type": "ephemeral" } }] },
+    {
+      "role": "assistant",
+      "content": [
+        { "type": "text", "text": "Смотрю погоду." },
+        { "type": "tool_use", "id": "toolu_1", "name": "get_weather", "input": { "city": "Москва" } }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        { "type": "tool_result", "tool_use_id": "toolu_1", "content": [{ "type": "text", "text": "+15°C, дождь" }] },
+        { "type": "text", "text": "И что надеть?" }
+      ]
+    }
+  ]
+}

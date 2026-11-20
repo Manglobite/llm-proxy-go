@@ -1,0 +1,62 @@
+{
+  "model": "glm-5.3",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты — аккуратный ассистент.\n\nОтвечай по-русски."
+    },
+    {
+      "role": "user",
+      "content": "Привет, как дела в Москве?"
+    },
+    {
+      "role": "assistant",
+      "content": "Смотрю погоду.",
+      "tool_calls": [
+        {
+          "id": "toolu_1",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{ \"city\": \"Москва\" }"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "+15°C, дождь",
+      "tool_call_id": "toolu_1"
+    },
+    {
+      "role": "user",
+      "content": "И что надеть?"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Погода в городе",
+        "parameters": {
+          "properties": {
+            "city": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "city"
+          ],
+          "type": "object"
+        }
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "max_tokens": 1024,
+  "temperature": 0.7,
+  "stop": [
+    "\n\nUser:"
+  ]
+}

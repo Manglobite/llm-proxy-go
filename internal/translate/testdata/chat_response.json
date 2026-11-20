@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-123",
+  "object": "chat.completion",
+  "model": "glm-5.3",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Сейчас +15°C.",
+        "reasoning_content": "Пользователь спросил про погоду",
+        "tool_calls": [
+          { "id": "call_1", "type": "function", "function": { "name": "get_weather", "arguments": "{\"city\":\"Москва\"}" } }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 120,
+    "completion_tokens": 30,
+    "prompt_tokens_details": { "cached_tokens": 80 },
+    "completion_tokens_details": { "reasoning_tokens": 12 }
+  }
+}

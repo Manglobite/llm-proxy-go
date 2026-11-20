@@ -1,0 +1,5 @@
+{
+  "id": 0, "ts": "str", "stage": "str", "status": 0, "alias": "str", "err": "str",
+  "dump": { "method": "str", "url": "str", "reqHeaders": "str", "reqBody": "str",
+            "respHeaders": "str", "respBody": "str" }
+}

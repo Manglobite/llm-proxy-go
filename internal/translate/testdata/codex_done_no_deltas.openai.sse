@@ -1,0 +1,10 @@
+data: {"choices":[{"delta":{"content":"","role":"assistant"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"content":"Короткий ответ целиком"},"index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{},"finish_reason":"stop","index":0}],"id":"chatcmpl-proxy","object":"chat.completion.chunk"}
+
+data: {"choices":[],"id":"chatcmpl-proxy","object":"chat.completion.chunk","usage":{"completion_tokens":5,"prompt_tokens":10,"prompt_tokens_details":{"cached_tokens":0}}}
+
+data: [DONE]
+

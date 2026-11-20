@@ -1,0 +1,27 @@
+event: response.created
+data: {"response":{"created_at":0,"id":"resp_test","model":"glm-5.3","object":"response","output":[],"status":"in_progress","usage":null},"type":"response.created"}
+
+event: response.output_item.added
+data: {"item":{"id":"item_0","summary":[],"type":"reasoning"},"output_index":0,"type":"response.output_item.added"}
+
+event: response.reasoning_text.delta
+data: {"delta":"Думаю","item_id":"item_0","output_index":0,"type":"response.reasoning_text.delta"}
+
+event: response.reasoning_text.delta
+data: {"delta":" о погоде","item_id":"item_0","output_index":0,"type":"response.reasoning_text.delta"}
+
+event: response.output_item.added
+data: {"item":{"content":[],"id":"item_1","role":"assistant","type":"message"},"output_index":1,"type":"response.output_item.added"}
+
+event: response.output_text.delta
+data: {"delta":"В Москве +15°C","item_id":"item_1","output_index":1,"type":"response.output_text.delta"}
+
+event: response.output_item.done
+data: {"item":{"id":"item_0","summary":[{"text":"Думаю о погоде","type":"summary_text"}],"type":"reasoning"},"output_index":0,"type":"response.output_item.done"}
+
+event: response.output_item.done
+data: {"item":{"content":[{"text":"В Москве +15°C","type":"output_text"}],"id":"item_1","role":"assistant","type":"message"},"output_index":1,"type":"response.output_item.done"}
+
+event: response.completed
+data: {"response":{"created_at":0,"id":"resp_test","model":"glm-5.3","object":"response","output":[{"id":"item_0","summary":[{"text":"Думаю о погоде","type":"summary_text"}],"type":"reasoning"},{"content":[{"text":"В Москве +15°C","type":"output_text"}],"id":"item_1","role":"assistant","type":"message"}],"status":"completed","usage":{"input_tokens":0,"output_tokens":0}},"type":"response.completed"}
+

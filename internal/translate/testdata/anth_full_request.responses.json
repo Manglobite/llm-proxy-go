@@ -1,0 +1,56 @@
+{
+  "model": "gpt-6.1-terra",
+  "instructions": "Ты — аккуратный ассистент.\n\nОтвечай по-русски.",
+  "input": [
+    {
+      "type": "message",
+      "role": "user",
+      "content": "Привет, как дела в Москве?"
+    },
+    {
+      "type": "message",
+      "role": "assistant",
+      "content": "Смотрю погоду."
+    },
+    {
+      "type": "function_call",
+      "call_id": "toolu_1",
+      "name": "get_weather",
+      "arguments": "{ \"city\": \"Москва\" }"
+    },
+    {
+      "type": "function_call_output",
+      "call_id": "toolu_1",
+      "output": "+15°C, дождь"
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "content": "И что надеть?"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "name": "get_weather",
+      "description": "Погода в городе",
+      "parameters": {
+        "properties": {
+          "city": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "city"
+        ],
+        "type": "object"
+      },
+      "strict": false
+    }
+  ],
+  "tool_choice": "required",
+  "max_output_tokens": 1024,
+  "temperature": 0.7,
+  "store": false,
+  "stream": true
+}

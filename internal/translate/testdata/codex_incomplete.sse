@@ -1,0 +1,5 @@
+# SPEC 8.4: response.incomplete → max_tokens (anthropic) / length (openai).
+response.created|{"type":"response.created","response":{"id":"resp_5","usage":null}}
+response.output_text.delta|{"type":"response.output_text.delta","item_id":"msg_1","delta":"Обрезанн"}
+response.output_item.done|{"type":"response.output_item.done","item":{"type":"message","id":"msg_1","content":[{"type":"output_text","text":"Обрезанный ответ"}]}}
+response.incomplete|{"type":"response.incomplete","response":{"id":"resp_5","usage":{"input_tokens":50,"output_tokens":100}}}

@@ -1,0 +1,7 @@
+# Codex Responses SSE: текстовый ответ. Формат фикстур: "event|data" по событию
+# на строку; пустое имя = data-only событие; строки с "#" — комментарии.
+response.created|{"type":"response.created","response":{"id":"resp_1","usage":null}}
+response.output_text.delta|{"type":"response.output_text.delta","item_id":"msg_1","delta":"Привет"}
+response.output_text.delta|{"type":"response.output_text.delta","item_id":"msg_1","delta":", мир!"}
+response.output_item.done|{"type":"response.output_item.done","item":{"type":"message","id":"msg_1","role":"assistant","content":[{"type":"output_text","text":"Привет, мир!"}]}}
+response.completed|{"type":"response.completed","response":{"id":"resp_1","usage":{"input_tokens":120,"input_tokens_details":{"cached_tokens":80,"cache_write_tokens":5},"output_tokens":30,"output_tokens_details":{"reasoning_tokens":12}},"output":[{"type":"message","id":"msg_1"}]}}

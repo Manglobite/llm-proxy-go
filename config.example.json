@@ -1,0 +1,113 @@
+{
+  "server": {
+    "listen": "127.0.0.1:8787",
+    "webui_token": "REPLACE_WITH_WEBUI_TOKEN",
+    "clients": {
+      "local": "REPLACE_WITH_CLIENT_KEY"
+    },
+    "stream_idle_timeout": "5m",
+    "upstream_connect_timeout": "30s",
+    "shutdown_timeout": "30s"
+  },
+  "storage": {
+    "db_path": "proxy.db",
+    "tokens_path": "tokens.json",
+    "zcode_tokens_path": "zcode-tokens.json"
+  },
+  "socks": {
+    "work": {
+      "url": "socks5h://127.0.0.1:1080",
+      "expected_ip": "192.0.2.10",
+      "check_url": "https://api.ipify.org",
+      "check_interval": "60s"
+    }
+  },
+  "providers": {
+    "ollama": {
+      "type": "openai-like",
+      "base_url": "http://127.0.0.1:11434",
+      "usage_poll": "0s",
+      "forward_paths": ["/api/tags", "/api/show"],
+      "accounts": [
+        {
+          "id": "local",
+          "auth": { "method": "api_key", "key": "" },
+          "socks": "none",
+          "allow_direct": false
+        }
+      ]
+    },
+    "openai": {
+      "type": "openai-like",
+      "base_url": "https://api.openai.com",
+      "accounts": [
+        {
+          "id": "main",
+          "auth": { "method": "api_key", "key": "REPLACE_WITH_OPENAI_API_KEY" },
+          "socks": "work"
+        }
+      ]
+    },
+    "glm": {
+      "type": "glm",
+      "base_url": "https://api.z.ai",
+      "accounts": [
+        {
+          "id": "plan",
+          "auth": { "method": "api_key", "key": "REPLACE_WITH_GLM_API_KEY" },
+          "coding_plan": true,
+          "socks": "work",
+          "plan_credits": { "window_5h": 12000, "window_weekly": 60000 }
+        }
+      ]
+    },
+    "codex": {
+      "type": "codex",
+      "base_url": "https://chatgpt.com",
+      "auth_base_url": "https://auth.openai.com",
+      "accounts": [
+        {
+          "id": "main",
+          "email": "codex@example.com",
+          "auth": { "method": "oauth", "callback_port": 1455 },
+          "socks": "work"
+        }
+      ]
+    },
+    "zcode": {
+      "type": "zcode",
+      "base_url": "https://api.z.ai",
+      "zcode_base_url": "https://zcode.z.ai",
+      "client_version": "3.17.2",
+      "route": "pat",
+      "usage_poll": "0s",
+      "accounts": [
+        {
+          "id": "main",
+          "email": "zcode@example.com",
+          "auth": { "method": "oauth" },
+          "socks": "work",
+          "plan_credits": { "window_5h": 12000, "window_weekly": 60000 }
+        }
+      ]
+    }
+  },
+  "aliases": {
+    "local/qwen": { "account": "ollama/local", "model": "qwen3:8b" },
+    "openai/mini": { "account": "openai/main", "model": "gpt-4.1-mini" },
+    "glm/plan": { "account": "glm/plan", "model": "glm-5.3" },
+    "codex/main": { "account": "codex/main", "model": "gpt-5.3-codex" },
+    "zcode/main": { "account": "zcode/main", "model": "glm-5.3" }
+  },
+  "models": {
+    "gpt-4.1-mini": {
+      "price_usd_per_m": { "input": 0.4, "output": 1.6, "cached_input": 0.1 }
+    },
+    "glm-5.3": {
+      "glm_credits": { "input_mult": 6.9, "cached_mult": 1.7, "output_mult": 24 }
+    },
+    "gpt-5.3-codex": {
+      "subscription": true
+    }
+  }
+}

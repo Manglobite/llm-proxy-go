@@ -1,0 +1,8 @@
+# Codex Responses SSE: reasoning-суммари дельтами, затем текст.
+response.created|{"type":"response.created","response":{"id":"resp_3","usage":null}}
+response.reasoning_summary_text.delta|{"type":"response.reasoning_summary_text.delta","item_id":"rs_1","delta":"Думаю о погоде"}
+response.reasoning_summary_text.delta|{"type":"response.reasoning_summary_text.delta","item_id":"rs_1","delta":" и выбираю формат ответа"}
+response.output_item.done|{"type":"response.output_item.done","item":{"type":"reasoning","id":"rs_1","summary":[{"type":"summary_text","text":"Думаю о погоде и выбираю формат ответа"}]}}
+response.output_text.delta|{"type":"response.output_text.delta","item_id":"msg_1","delta":"В Москве +15°C"}
+response.output_item.done|{"type":"response.output_item.done","item":{"type":"message","id":"msg_1","content":[{"type":"output_text","text":"В Москве +15°C"}]}}
+response.completed|{"type":"response.completed","response":{"id":"resp_3","usage":{"input_tokens":90,"output_tokens":40,"output_tokens_details":{"reasoning_tokens":25}},"output":[{"type":"reasoning","id":"rs_1"},{"type":"message","id":"msg_1"}]}}

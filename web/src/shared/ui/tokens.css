@@ -1,0 +1,15 @@
+/* Токены дизайн-системы — нейминг shadcn + статусные расширения прокси (CODING 2.3).
+   Маппинг из эталона webui-design.html:
+   --bg→--background, --panel→--card, --panel2→--muted, --text→--foreground,
+   --muted(цвет текста)→--muted-foreground, --accent→--primary, --accent-dim→--primary-dim. */
+:root {
+  --background:#0f1115; --foreground:#dbe2ef;
+  --card:#161a22; --card-foreground:#dbe2ef;
+  --muted:#1b202b; --muted-foreground:#8a94a8; --dim:#5c6678;
+  --primary:#4f8cff; --primary-foreground:#fff; --primary-dim:#2b4c8f;
+  --destructive:#f85149; --border:#242b3a; --input:#242b3a; --ring:#4f8cff;
+  --radius:10px;
+  --ok:#3fb950; --warn:#d29922; --err:#f85149; --cache:#a371f7; --reasoning:#2f81f7;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}

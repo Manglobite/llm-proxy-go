@@ -1,0 +1,6 @@
+# OpenAI chat SSE: z.ai-стиль reasoning_content перед контентом → thinking-блок.
+|{"id":"c3","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"role":"assistant","reasoning_content":"Думаю"}}]}
+|{"id":"c3","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"reasoning_content":" о погоде"}}]}
+|{"id":"c3","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"В Москве +15°C"}}]}
+|{"id":"c3","object":"chat.completion.chunk","choices":[{"index":0,"delta":{},"finish_reason":"stop"}]}
+|[DONE]

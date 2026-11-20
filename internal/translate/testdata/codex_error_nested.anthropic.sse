@@ -1,0 +1,6 @@
+event: message_start
+data: {"message":{"content":[],"id":"msg_proxy","model":"","role":"assistant","stop_reason":null,"stop_sequence":null,"type":"message","usage":{"input_tokens":0,"output_tokens":0}},"type":"message_start"}
+
+event: error
+data: {"error":{"code":"rate_limit","message":"лимит","type":"upstream_error"},"type":"error"}
+
